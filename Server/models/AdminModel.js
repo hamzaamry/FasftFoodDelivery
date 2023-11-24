@@ -1,7 +1,12 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
-  username: {
+const adminSchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+    required: true,
+    unique: false,
+  },
+  lastName: {
     type: String,
     required: true,
     unique: false,
@@ -15,12 +20,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  num_tel: {
-    type: String,
-    required: true,
-  },
 });
 
-const User = mongoose.model('User', userSchema);
+const Admin = mongoose.model('Admin', adminSchema);
 
-export default User
+export default Admin

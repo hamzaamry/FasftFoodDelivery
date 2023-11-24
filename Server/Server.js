@@ -1,10 +1,14 @@
 import  express  from "express";
 import dotenv from "dotenv";
 import  cors  from "cors";
+import mongoose from "mongoose";
 
-dotenv.config()
 
-const port = process.env.PORT || 5000
+import AdminRoutes from './routes/AdminRoutes.js'
+import UserRoutes from './routes/UserRoutes.js'
+
+dotenv.config();
+
 
 const app = express()
 
@@ -14,4 +18,22 @@ app.use(express.json()) // to use the body-parser ( to get the data from req.bod
 app.use(express.urlencoded({ extended: true })) // to got the form data
 
 
-app.listen(port, () => console.log( `Server running on port ${port} 🔥`));
+//routes config
+app.use('/api/admin' , AdminRoutes)
+app.use('/api/user' , UserRoutes)
+
+
+
+mongoose.connect(process.env.MONGO_URL);
+const conn = mongoose.connection
+
+conn.once('open' , ()=> {
+    console.log('Database connected successfully')
+})
+
+conn.on('error' , () => {
+    console.log('Error connecting to database')
+    process.exit()
+})
+
+app.listen(process.env.PORT, () => console.log( `Server running on port ${process.env.PORT} 🔥`));
