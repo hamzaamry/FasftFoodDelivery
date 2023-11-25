@@ -1,7 +1,12 @@
 import Admin from '../models/AdminModel.js'
+import AdminRestau from '../models/AdminRestauModel.js'
+import DeliveryGuy from '../models/DeliveryGuyModel.js'
+
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 const SECRET_KEY = "ASBA";
+
+
 // Route   POST /api/admin/registerAdmin
 export const registerAdmin = async (req, res) => {
   try {
@@ -38,7 +43,8 @@ export const registerAdmin = async (req, res) => {
 export const checkAdminToken = async (req, res) => {
   try {
     const { token } = req.headers
-
+    if(!token)
+    throw new Error('Provide a token in the headers')
     const verified = jwt.verify(token, SECRET_KEY);
 
     if(verified)
@@ -82,3 +88,77 @@ export const authAdmin = async (req, res) => {
   }
 };
 
+////////////////////// Gestion de restaurant ///////////////////////////
+
+// Route   POST /api/admin/RestauRequestHandler
+
+export const RestauRequestHandler = async (req , res) => {
+  try {
+
+  } catch(err){
+    console.log(err);
+  }
+
+}
+
+// Route   POST /api/admin/GetAllRestauRequests
+
+export const GetAllRestauRequests = async (req , res) => {
+  try {
+      const pendingRequests = await DeliveryGuy.find({ status: 'pending' })
+
+      // Display the pending requests to the admin for approval
+      res.status(200).json({ pendingRequests });
+    } catch(err){
+      res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+
+// Route   POST /api/admin/DeleteRestau
+
+export const DeleteRestau = async (req , res) => {
+  try {
+
+    } catch(err){
+      console.log(err);
+    }
+}
+
+
+////////////////////// Gestion de Livreur ///////////////////////////
+
+
+
+// Route   POST /api/admin/DeliveryGuyRequestHandler
+
+export const getDeliveryGuysRequests = async (req , res) => {
+  try {
+    const pendingRequests = await AdminRestau.find({ status: 'pending' })
+
+    // Display the pending requests to the admin for approval
+    res.status(200).json({ pendingRequests });
+  } catch(err){
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+
+export const DeliveryGuyRequestHandler = async (req , res) => {
+  try {
+
+    } catch(err){
+      console.log(err);
+  }
+}
+
+// Route   POST /api/admin/DeliveryGuyDelete
+
+export const DeliveryGuyDelete = async (req , res) => {
+  try {
+
+    } catch(err){
+      console.log(err);
+  }
+}

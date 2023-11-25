@@ -31,6 +31,10 @@ const DeliveryGuySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    default: 'pending'
+  }
 });
 
 const DeliveryGuy = mongoose.model("DeliveryGuy", DeliveryGuySchema);

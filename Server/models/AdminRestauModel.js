@@ -34,9 +34,11 @@ const adminRestauSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    default: "pending",
+  }
 });
 
 const AdminRestau = mongoose.model("AdminRestau", adminRestauSchema);
-
-module.exports = AdminRestau
 export default AdminRestau
