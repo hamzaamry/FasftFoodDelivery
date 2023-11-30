@@ -7,6 +7,8 @@ import mongoose from "mongoose";
 import AdminRoutes from './routes/AdminRoutes.js'
 import UserRoutes from './routes/UserRoutes.js'
 import AdminRestau from './routes/AdminRestauRoutes.js'
+import DeliveryGuyRoutes from './routes/DeliveryGuyRoutes.js'
+
 dotenv.config();
 
 
@@ -22,7 +24,7 @@ app.use(express.urlencoded({ extended: true })) // to got the form data
 app.use('/api/admin' , AdminRoutes)
 app.use('/api/user' , UserRoutes)
 app.use('/api/restau', AdminRestau)
-
+app.use('/api/deliveryGuy', DeliveryGuyRoutes )
 
 
 mongoose.connect(process.env.MONGO_URL);

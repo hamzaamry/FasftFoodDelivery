@@ -8,6 +8,7 @@ const SECRET_KEY = "ASBA";
 
 
 // Route   POST /api/admin/registerAdmin
+
 export const registerAdmin = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
@@ -39,12 +40,17 @@ export const registerAdmin = async (req, res) => {
   }
 };
 
+
+
+
 // Route GET /api/admin/checkAdminToken
 export const checkAdminToken = async (req, res) => {
   try {
     const { token } = req.headers
-    if(!token)
-    throw new Error('Provide a token in the headers')
+    if(!token){
+      throw new Error('Provide a token in the headers')
+    }
+    
     const verified = jwt.verify(token, SECRET_KEY);
 
     if(verified)
@@ -56,6 +62,10 @@ export const checkAdminToken = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 }
+
+
+
+
 
 // Route   POST /api/admin/authAdmin
 export const authAdmin = async (req, res) => {
@@ -88,24 +98,54 @@ export const authAdmin = async (req, res) => {
   }
 };
 
+
+
+
 ////////////////////// Gestion de restaurant ///////////////////////////
+
+
 
 // Route   POST /api/admin/RestauRequestHandler
 
-export const RestauRequestHandler = async (req , res) => {
+export const RestauRequestHandler = async (req, res) => {
   try {
+    const { requestId, action } = req.body;
 
-  } catch(err){
-    console.log(err);
+    if (!requestId || !action) {
+      return res.status(400).json({ error: 'Invalid request' });
+    }
+
+    let status;
+    if (action === 'approve') {
+      status = 'approved';
+    } else if (action === 'reject') {
+      status = 'declined';
+    } else {
+      return res.status(400).json({ error: 'Invalid action' });
+    }
+
+    const updatedRequest = await AdminRestau.findByIdAndUpdate(
+      requestId,
+      { status },
+      { new: true } // Return the modified document
+    );
+
+    if (!updatedRequest) {
+      return res.status(404).json({ error: 'Request not found' });
+    }
+
+    res.status(200).json({ updatedRequest });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
   }
+};
 
-}
-
-// Route   POST /api/admin/GetAllRestauRequests
+// Route   GET /api/admin/GetAllRestauRequests
 
 export const GetAllRestauRequests = async (req , res) => {
   try {
-      const pendingRequests = await DeliveryGuy.find({ status: 'pending' })
+      const pendingRequests = await AdminRestau.find({ status: 'pending' })
 
       // Display the pending requests to the admin for approval
       res.status(200).json({ pendingRequests });
@@ -115,16 +155,30 @@ export const GetAllRestauRequests = async (req , res) => {
 }
 
 
-
 // Route   POST /api/admin/DeleteRestau
 
-export const DeleteRestau = async (req , res) => {
+export const DeleteRestau = async (req, res) => {
   try {
+    const { restaurantId } = req.body;
 
-    } catch(err){
-      console.log(err);
+    if (!restaurantId) {
+      return res.status(400).json({ error: 'Invalid request' });
     }
-}
+
+    const deletedRestaurant = await AdminRestau.findByIdAndDelete(restaurantId);
+
+    if (!deletedRestaurant) {
+      return res.status(404).json({ error: 'Restaurant not found' });
+    }
+
+    res.status(200).json({ message: 'Restaurant deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
 
 
 ////////////////////// Gestion de Livreur ///////////////////////////
@@ -135,7 +189,7 @@ export const DeleteRestau = async (req , res) => {
 
 export const getDeliveryGuysRequests = async (req , res) => {
   try {
-    const pendingRequests = await AdminRestau.find({ status: 'pending' })
+    const pendingRequests = await DeliveryGuy.find({ status: 'pending' })
 
     // Display the pending requests to the admin for approval
     res.status(200).json({ pendingRequests });
@@ -145,20 +199,77 @@ export const getDeliveryGuysRequests = async (req , res) => {
 }
 
 
-export const DeliveryGuyRequestHandler = async (req , res) => {
+export const DeliveryGuyRequestHandler = async (req, res) => {
   try {
+    const { requestId, action } = req.body;
 
-    } catch(err){
-      console.log(err);
+    if (!requestId || !action) {
+      return res.status(400).json({ error: 'Invalid request' });
+    }
+
+    if (action === 'approve') {
+      // Get the delivery guy request
+      const deliveryGuyRequest = await DeliveryGuyRequest.findById(requestId);
+
+      if (!deliveryGuyRequest) {
+        return res.status(404).json({ error: 'Request not found' });
+      }
+
+      // Create a new delivery guy entry in the database
+      const newDeliveryGuy = new DeliveryGuy({
+        userName,
+        email,
+        password,
+        num_tel,
+        age,
+        vehiculeType,
+        city,
+      });
+
+      await newDeliveryGuy.save();
+
+      // Delete the delivery guy request from the database
+      await deliveryGuyRequest.remove();
+
+      res.status(200).json({ message: 'Delivery guy approved successfully' });
+    } else if (action === 'reject') {
+      // Delete the delivery guy request from the database
+      const deletedRequest = await DeliveryGuyRequest.findByIdAndDelete(requestId);
+
+      if (!deletedRequest) {
+        return res.status(404).json({ error: 'Request not found' });
+      }
+
+      res.status(200).json({ message: 'Delivery guy request rejected and deleted successfully' });
+    } else {
+      return res.status(400).json({ error: 'Invalid action' });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
   }
-}
+};
 
 // Route   POST /api/admin/DeliveryGuyDelete
 
-export const DeliveryGuyDelete = async (req , res) => {
+export const DeliveryGuyDelete = async (req, res) => {
   try {
+    const { deliveryGuyId } = req.body;
 
-    } catch(err){
-      console.log(err);
+    if (!deliveryGuyId) {
+      return res.status(400).json({ error: 'Invalid request' });
+    }
+
+    // Find and delete the delivery guy account
+    const deletedDeliveryGuy = await DeliveryGuy.findByIdAndDelete(deliveryGuyId);
+
+    if (!deletedDeliveryGuy) {
+      return res.status(404).json({ error: 'Delivery guy not found' });
+    }
+
+    res.status(200).json({ message: 'Delivery guy account deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
   }
-}
+};

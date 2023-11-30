@@ -7,6 +7,7 @@ import {
 import axios from 'axios';
 
 const AuthContext = createContext({}); 
+
 // eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setAuthenticated] = useState(false);
