@@ -24,6 +24,7 @@ import RestauPanel from '../pages/Restau/RestauPanel'
 import DeliveryGuyOrders from '../pages/Delivery/DeliveryGuyOrders'
 
 import AboutClient from "../pages/AboutClient";
+import Recommendations from "../pages/Recommendations"
 
 const Routers = () => {
   return (
@@ -52,6 +53,7 @@ const Routers = () => {
       <Route path="/DeliveryGuyOrders" element={<DeliveryGuyOrders />} />
 
       <Route path="/AboutClient" element={<AboutClient />} />
+      <Route path="/Recommendations" element={<Recommendations />} />
 
 
     </Routes>

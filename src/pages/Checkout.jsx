@@ -1,13 +1,21 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector , useDispatch } from "react-redux";
 import { Container, Row, Col } from "reactstrap";
 import CommonSection from "../components/UI/common-section/CommonSection";
 import Helmet from "../components/Helmet/Helmet";
 
 import "../styles/checkout.css";
 import axios from "axios";
+import { cartActions } from "../store/shopping-cart/cartSlice.js"
+
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
+
+  const dispatch = useDispatch();
+  const Navigate = useNavigate()
+
+
   const [enterName, setEnterName] = useState("");
   const [enterEmail, setEnterEmail] = useState("");
   const [enterNumber, setEnterNumber] = useState("");
@@ -45,6 +53,14 @@ const Checkout = () => {
       setPostalCode("");
 
       setOrderSubmitted(true);
+
+      // Redirect to "/Recommendations" and pass the cart items as state
+      Navigate("/Recommendations",  { cartItems: cartTotalAmount });
+
+      // Clear the entire cart using the new action
+      dispatch(cartActions.clearCart());
+
+
 
     } catch (error) {
       console.error("Error submitting order:", error);

@@ -106,7 +106,6 @@ export const authAdmin = async (req, res) => {
 
 
 // Route   POST /api/admin/RestauRequestHandler
-// Route POST /api/admin/RestauRequestHandler
 export const RestauRequestHandler = async (req, res) => {
   const { id, status } = req.body;
 
