@@ -12,6 +12,11 @@ router.get('/GetAllRestauRequests', GetAllRestauRequests)
 router.get('/getDeliveryGuysRequests', getDeliveryGuysRequests)
  
 
+router.post('/RestauRequestHandler' , RestauRequestHandler);
+router.post('/DeliveryGuyRequestHandler' , DeliveryGuyRequestHandler);
+
+
+
 router.delete('/DeleteRestau', DeleteRestau)
 router.delete('/DeliveryGuyDelete', DeliveryGuyDelete)
 

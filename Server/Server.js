@@ -8,6 +8,8 @@ import AdminRoutes from './routes/AdminRoutes.js'
 import UserRoutes from './routes/UserRoutes.js'
 import AdminRestau from './routes/AdminRestauRoutes.js'
 import DeliveryGuyRoutes from './routes/DeliveryGuyRoutes.js'
+import OrderRequest from "./routes/OrderRequestRoutes.js";
+
 
 dotenv.config();
 
@@ -25,6 +27,7 @@ app.use('/api/admin' , AdminRoutes)
 app.use('/api/user' , UserRoutes)
 app.use('/api/restau', AdminRestau)
 app.use('/api/deliveryGuy', DeliveryGuyRoutes )
+app.use('/api/OrderRequest', OrderRequest )
 
 
 mongoose.connect(process.env.MONGO_URL);

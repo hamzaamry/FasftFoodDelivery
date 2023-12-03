@@ -40,3 +40,4 @@ const DeliveryGuySchema = new mongoose.Schema({
 const DeliveryGuy = mongoose.model("DeliveryGuy", DeliveryGuySchema);
 
 export default DeliveryGuy
+ 

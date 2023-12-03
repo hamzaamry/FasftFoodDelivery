@@ -1,10 +1,13 @@
-import express, { Router } from 'express'
+import express from 'express'
 
-import { SubmitRequest } from '../controllers/DeliveryGuyController.js'
+import { SubmitRequest, AuthDeliveryGuy, GetClientOrders } from '../controllers/DeliveryGuyController.js'
 
 const router = express.Router()
 
+router.get('/GetClientOrders', GetClientOrders)
+
 router.post('/SubmitRequest', SubmitRequest)
+router.post('/AuthDeliveryGuy', AuthDeliveryGuy)
 
 
 

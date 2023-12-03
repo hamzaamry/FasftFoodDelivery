@@ -106,40 +106,32 @@ export const authAdmin = async (req, res) => {
 
 
 // Route   POST /api/admin/RestauRequestHandler
-
+// Route POST /api/admin/RestauRequestHandler
 export const RestauRequestHandler = async (req, res) => {
+  const { id, status } = req.body;
+
   try {
-    const { requestId, action } = req.body;
+    // Find the restaurant request in the database based on the provided ID
+    const restaurantRequest = await AdminRestau.findById(id);
 
-    if (!requestId || !action) {
-      return res.status(400).json({ error: 'Invalid request' });
+    // Check if the request is found
+    if (!restaurantRequest) {
+      return res.status(404).json({ message: 'Restaurant request not found' });
     }
 
-    let status;
-    if (action === 'approve') {
-      status = 'approved';
-    } else if (action === 'reject') {
-      status = 'declined';
-    } else {
-      return res.status(400).json({ error: 'Invalid action' });
-    }
+    // Update the status of the restaurant request
+    AdminRestau.status = status;
 
-    const updatedRequest = await AdminRestau.findByIdAndUpdate(
-      requestId,
-      { status },
-      { new: true } // Return the modified document
-    );
+    // Save the updated restaurant request
+    await AdminRestau.save();
 
-    if (!updatedRequest) {
-      return res.status(404).json({ error: 'Request not found' });
-    }
-
-    res.status(200).json({ updatedRequest });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
+    res.json({ message: `Restaurant request ${status}` });
+  } catch (error) {
+    console.error('Error handling restaurant request:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
 
 // Route   GET /api/admin/GetAllRestauRequests
 
@@ -198,57 +190,33 @@ export const getDeliveryGuysRequests = async (req , res) => {
   }
 }
 
-
+// Route POST /api/admin/DeliveryGuyRequestHandler
 export const DeliveryGuyRequestHandler = async (req, res) => {
+  const { id, status } = req.body;
+
   try {
-    const { requestId, action } = req.body;
+    // Find the delivery guy request in the database based on the provided ID
+    const deliveryGuyRequest = await DeliveryGuy.findById(id);
 
-    if (!requestId || !action) {
-      return res.status(400).json({ error: 'Invalid request' });
+    // Check if the request is found
+    if (!deliveryGuyRequest) {
+      return res.status(404).json({ message: 'Delivery guy request not found' });
     }
 
-    if (action === 'approve') {
-      // Get the delivery guy request
-      const deliveryGuyRequest = await DeliveryGuyRequest.findById(requestId);
+    // Update the status of the delivery guy request
+    DeliveryGuy.status = status;
 
-      if (!deliveryGuyRequest) {
-        return res.status(404).json({ error: 'Request not found' });
-      }
+    // Save the updated delivery guy request
+    await DeliveryGuy.save();
 
-      // Create a new delivery guy entry in the database
-      const newDeliveryGuy = new DeliveryGuy({
-        userName,
-        email,
-        password,
-        num_tel,
-        age,
-        vehiculeType,
-        city,
-      });
-
-      await newDeliveryGuy.save();
-
-      // Delete the delivery guy request from the database
-      await deliveryGuyRequest.remove();
-
-      res.status(200).json({ message: 'Delivery guy approved successfully' });
-    } else if (action === 'reject') {
-      // Delete the delivery guy request from the database
-      const deletedRequest = await DeliveryGuyRequest.findByIdAndDelete(requestId);
-
-      if (!deletedRequest) {
-        return res.status(404).json({ error: 'Request not found' });
-      }
-
-      res.status(200).json({ message: 'Delivery guy request rejected and deleted successfully' });
-    } else {
-      return res.status(400).json({ error: 'Invalid action' });
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
+    res.json({ message: `Delivery guy request ${status}` });
+  } catch (error) {
+    console.error('Error handling delivery guy request:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
+
 
 // Route   POST /api/admin/DeliveryGuyDelete
 
