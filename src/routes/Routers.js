@@ -23,6 +23,8 @@ import DeliveryAuth from "../pages/Delivery/DeliveryAuth";
 import RestauPanel from '../pages/Restau/RestauPanel'
 import DeliveryGuyOrders from '../pages/Delivery/DeliveryGuyOrders'
 
+import AboutClient from "../pages/AboutClient";
+
 const Routers = () => {
   return (
     <Routes>
@@ -48,6 +50,8 @@ const Routers = () => {
 
       <Route path="/RestauPanel" element={<RestauPanel />} />
       <Route path="/DeliveryGuyOrders" element={<DeliveryGuyOrders />} />
+
+      <Route path="/AboutClient" element={<AboutClient />} />
 
 
     </Routes>

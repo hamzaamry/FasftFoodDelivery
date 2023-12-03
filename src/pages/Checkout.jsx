@@ -17,7 +17,6 @@ const Checkout = () => {
 
   const [orderSubmitted, setOrderSubmitted] = useState(false);
 
-  const shippingInfo = [];
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
   const shippingCost = 30;
 
@@ -35,9 +34,8 @@ const Checkout = () => {
     };
 
     try {
-      // Make a POST request to submit the order
       await axios.post("http://localhost:5000/api/OrderRequest/SubmitOrder", userShippingAddress);
-
+    
       // Reset the form fields
       setEnterName("");
       setEnterEmail("");
@@ -46,13 +44,10 @@ const Checkout = () => {
       setEnterCity("");
       setPostalCode("");
 
-      // Set a flag to display the success message
       setOrderSubmitted(true);
 
-      // Dispatch any actions or perform other necessary tasks here
     } catch (error) {
       console.error("Error submitting order:", error);
-      // Handle error if needed
     }
   };
 
