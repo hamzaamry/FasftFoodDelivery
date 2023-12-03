@@ -80,7 +80,7 @@ const AdminPanel = () => {
   }
 
   return (
-    <div>
+    <div style={{ padding : '3rem'}} >
       <h1>Admin Panel</h1>
 
       <section>

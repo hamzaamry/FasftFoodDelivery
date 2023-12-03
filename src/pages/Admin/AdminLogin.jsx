@@ -38,22 +38,19 @@ export default function AdminLogin() {
     try {
       const response = await axios.post('http://localhost:5000/api/admin/authAdmin', formData);
       console.log(response)
-      // If authentication is successful, redirect to '/AdminPanel'
       if (response.status === 200) {
         navigate('/AdminPanel');
       } else {
         console.error('Authentication failed');
-        // Handle case where authentication fails, display error message, etc.
       }
     } catch (error) {
       console.error('Error during authentication', error);
-      // Handle request errors, display error message, etc.
     }
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs"  >
         <CssBaseline />
         <Box
           sx={{
@@ -104,15 +101,15 @@ export default function AdminLogin() {
             >
               Sign In
             </Button>
-            <Grid container>
+            <Grid container sx={{ mt: 3, mb: 20 }} >
               <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
-              <Grid item>
+              <Grid item  >
                 <Link to="/AdminRegister" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  Don't have an account? Sign up
                 </Link>
               </Grid>
             </Grid>

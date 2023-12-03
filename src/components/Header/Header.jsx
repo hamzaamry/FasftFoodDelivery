@@ -49,7 +49,7 @@ const Header = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", () => {
+    const handleScroll = () => {
       if (
         document.body.scrollTop > 80 ||
         document.documentElement.scrollTop > 80
@@ -58,10 +58,16 @@ const Header = () => {
       } else {
         headerRef.current.classList.remove("header__shrink");
       }
-    });
-
-    return () => window.removeEventListener("scroll");
+    };
+  
+    window.addEventListener("scroll", handleScroll);
+  
+    // Cleanup: Remove the event listener
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
+  
 
   return (
     <header className="header" ref={headerRef}>
@@ -69,7 +75,7 @@ const Header = () => {
         <div className="nav__wrapper d-flex align-items-center justify-content-between">
           <div className="logo">
             <img src={logo} alt="logo" />
-            <h5>Tasty Treat</h5>
+            <h5>Foodie</h5>
           </div>
 
           {/* ======= menu ======= */}

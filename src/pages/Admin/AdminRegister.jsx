@@ -57,7 +57,7 @@ export default function AdminRegister() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" sx={{ mt: 3, mb: 20 }} >
         <CssBaseline />
         <Box
           sx={{

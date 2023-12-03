@@ -15,7 +15,6 @@ const Checkout = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate()
 
-
   const [enterName, setEnterName] = useState("");
   const [enterEmail, setEnterEmail] = useState("");
   const [enterNumber, setEnterNumber] = useState("");
@@ -54,13 +53,10 @@ const Checkout = () => {
 
       setOrderSubmitted(true);
 
-      // Redirect to "/Recommendations" and pass the cart items as state
-      Navigate("/Recommendations",  { cartItems: cartTotalAmount });
+      Navigate("/Recommendations");
 
       // Clear the entire cart using the new action
       dispatch(cartActions.clearCart());
-
-
 
     } catch (error) {
       console.error("Error submitting order:", error);
